@@ -57,8 +57,8 @@ except ImportError:
     pass
 
 def log(*args):
-    now = datetime.datetime.utcnow()
-    line = ' '.join(map(str, (now,) + args))
+    now = "(" + str(int(time.time())) + ")"
+    line = '    '.join(map(str, (now,) + args))
     print line
     with open(LOG_PATH, 'a') as fp:
         fp.write('%s\n' % line)
@@ -484,6 +484,7 @@ class Model(object):
         x, y, z, rx, ry = map(float, (x, y, z, rx, ry))
         client.position = (x, y, z, rx, ry)
         self.send_position(client)
+        log('on_position', x, y, z, rx, ry)
     def on_talk(self, client, *args):
         text = ','.join(args)
         if text.startswith('/'):
